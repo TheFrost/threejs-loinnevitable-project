@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import Stats from 'stats.js'
 import OrbitControlsModule from 'three-orbit-controls'
+import { loader } from './utils/tools'
 
 // subjects
 import SceneSubject from './sceneSubjects/SceneSubject'
@@ -60,33 +61,74 @@ export default class SceneManager {
     return new OrbitControls(camera)
   }
 
-  createSceneSubjects = scene => {
+  createSceneSubjects = (scene, resources) => {
     const sceneSubjects = [
-      new SceneSubject(scene)
+      new SceneSubject(scene, resources)
     ]
 
     return sceneSubjects
   }
 
-  constructor (canvas, debugMode = false) {
+  preloadResources = async collection => {
+    const promises = []
+
+    collection.map(item => {
+      const promise = new Promise((resolve, reject) => {
+        loader.load(
+          item, // path
+          resource => resolve(resource), // onLoad callback
+          undefined, // onProgress callback currently not supported
+          xhr => { // onError callback
+            reject(new Error(`${xhr} An error occurred loading while loading: ${item}`))
+          }
+        )
+      })
+
+      promises.push(promise)
+    })
+
+    const resources = await Promise.all(promises)
+
+    return resources
+  }
+
+  init = resources => {
+    this.resources = resources
+    this.scene = this.buildScene()
+    this.renderer = this.buildRender(this.screenDimentions)
+    this.camera = this.buildCamera(this.screenDimentions)
+    this.sceneSubjects = this.createSceneSubjects(this.scene, this.resources)
+    if (this.debugMode) {
+      this.buildStats()
+      // this.buildOrbitControls(this.camera)
+    }
+
+    this.ready = true
+  }
+
+  constructor (
+    {
+      canvas = null,
+      resources = []
+    },
+    debugMode = false
+  ) {
+    this.ready = false
     this.debugMode = debugMode
     this.canvas = canvas
+    this.resources = []
     this.screenDimentions = {
       width: this.canvas.width,
       height: this.canvas.height
     }
 
-    this.scene = this.buildScene()
-    this.renderer = this.buildRender(this.screenDimentions)
-    this.camera = this.buildCamera(this.screenDimentions)
-    this.sceneSubjects = this.createSceneSubjects(this.scene)
-    if (debugMode) {
-      this.buildStats()
-      // this.buildOrbitControls(this.camera)
-    }
+    this.preloadResources(resources)
+      .then(textures => this.init(textures))
   }
 
   update () {
+    if (!this.ready) return
+
     if (this.debugMode) this.stats.begin()
 
     const delta = this.clock.getDelta()
@@ -106,6 +148,8 @@ export default class SceneManager {
     const { width, height } = this.canvas
 
     this.screenDimentions = { width, height }
+
+    if (!this.ready) return
 
     this.camera.aspect = width / height
     this.camera.updateProjectionMatrix()

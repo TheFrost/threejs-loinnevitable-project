@@ -1,3 +1,3 @@
 import * as THREE from 'three'
 
-export const textureLoader = new THREE.TextureLoader()
+export const loader = new THREE.TextureLoader()
