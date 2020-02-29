@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime'
 import SceneManager from './webgl/SceneManager'
 
 const canvas = document.getElementById('canvas')
