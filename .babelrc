@@ -1,7 +1,11 @@
 {
-  "presets": ["env"],
+  "presets": [
+    ["@babel/preset-env", {
+      "useBuiltIns": "entry"
+    }]
+  ],
   "plugins": [
-    "transform-class-properties",
-    "transform-object-rest-spread"
+    ["@babel/plugin-proposal-object-rest-spread", {}, "object-rest-spread"],
+    "@babel/plugin-proposal-class-properties"
   ]
 }
