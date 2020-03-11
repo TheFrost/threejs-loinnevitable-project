@@ -5,8 +5,22 @@ const canvas = document.getElementById('canvas')
 const sceneManager = new SceneManager({
   canvas,
   resources: [
-    'https://images.unsplash.com/photo-1517462964-21fdcec3f25b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
-    'https://images.unsplash.com/photo-1542080681-b52d382432af?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2734&q=80'
+    {
+      image: 'https://images.unsplash.com/photo-1533661537256-701c0084511d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&h=1024',
+      degrade: 0.95
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1557939403-1760a0e47505?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&h=1024',
+      degrade: 0.57
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1564086539698-2c4d0e640d7a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&h=1024',
+      degrade: 0.79
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1564022228519-2f6975e40da8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&h=1024',
+      degrade: 0.15
+    }
   ]
 }, true)
 

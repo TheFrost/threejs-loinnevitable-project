@@ -47,7 +47,7 @@ export default class SceneManager {
       nearPlane,
       farPlane
     )
-    camera.position.z = 8
+    camera.position.z = 1
 
     return camera
   }
@@ -75,8 +75,11 @@ export default class SceneManager {
     collection.map(item => {
       const promise = new Promise((resolve, reject) => {
         loader.load(
-          item, // path
-          resource => resolve(resource), // onLoad callback
+          item.image, // path
+          image => {
+            item.image = image
+            resolve(item)
+          }, // onLoad callback
           undefined, // onProgress callback currently not supported
           xhr => { // onError callback
             reject(new Error(`${xhr} An error occurred loading while loading: ${item}`))
