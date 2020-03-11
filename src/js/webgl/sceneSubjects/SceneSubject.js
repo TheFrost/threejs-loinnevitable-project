@@ -1,64 +1,118 @@
 import * as THREE from 'three'
-import Guify from 'guify'
-import { loader } from '../utils/tools'
+import { TimelineMax } from 'gsap'
 
 // shaders
 import vertexShader from '../shaders/vertexShader.glsl'
 import fragmentShader from '../shaders/fragmentShader.glsl'
 
 export default class SceneSubject {
-  constructor (scene, resources) {
-    const dinamicUniforms = {
-      degrade: 0
-    }
+  planes = []
+  limitPlanes = 2
+  timerControl = 0
+  timerLimit = 10
+  currentIndex = null
+  geometry = null
+  material = null
+  resources = null
+  scene = null
+  boolControl = false
+  timerSlideActive = true
 
-    const geometry = new THREE.PlaneBufferGeometry(5, 7)
-    const material = new THREE.ShaderMaterial({
+  constructor (scene, resources) {
+    this.resources = resources
+    this.currentIndex = resources.length > 0 ? 1 : 0
+    this.scene = scene
+    this.buildBaseSource()
+    this.setupShapes()
+
+    document
+      .querySelector('.next')
+      .addEventListener('click', () => this.triggerChangeTimeline())
+  }
+
+  buildBaseSource () {
+    this.geometry = new THREE.PlaneBufferGeometry(1, 1)
+    this.material = new THREE.ShaderMaterial({
       transparent: true,
       vertexShader,
       fragmentShader,
       uniforms: {
-        degrade: {
+        uAlpha: {
           type: 'f',
-          value: dinamicUniforms.degrade
+          value: 1
         },
-        texture1: {
-          type: 't',
-          value: resources[0]
+        uDegrade: {
+          type: 'f',
+          value: 0
         },
-        texture2: {
+        uTexture: {
           type: 't',
-          value: resources[1]
+          value: null
         }
       }
     })
+  }
 
-    this.mesh = new THREE.Mesh(geometry, material)
+  setupShapes () {
+    for (let i = 0; i < this.limitPlanes; i++) {
+      const materialClone = this.material.clone()
 
-    scene.add(this.mesh)
+      materialClone.uniforms.uAlpha.value = 1 - i
+      materialClone.uniforms.uTexture.value = this.resources[i].image
 
-    this.buildGuiControls(dinamicUniforms)
+      const plane = new THREE.Mesh(
+        this.geometry,
+        materialClone
+      )
+      plane.position.z = -0.1 * i
+
+      this.scene.add(plane)
+      this.planes.push(plane)
+    }
+  }
+
+  triggerChangeTimeline () {
+    const planeFront = this.planes[+this.boolControl]
+    const planeBack = this.planes[+!this.boolControl]
+    const timeline = new TimelineMax()
+    const baseTime = 2
+
+    timeline
+      .to(planeFront.material.uniforms.uAlpha, baseTime, {
+        value: 0,
+        ease: 'Expo.easeInOut'
+      })
+      .to(planeFront.position, baseTime, {
+        z: -0.1,
+        ease: 'Expo.easeInOut'
+      }, `-=${baseTime}`)
+      .to(planeBack.material.uniforms.uAlpha, baseTime, {
+        value: 1,
+        ease: 'Expo.easeInOut'
+      }, `-=${baseTime}`)
+      .to(planeBack.position, baseTime, {
+        z: 0,
+        ease: 'Expo.easeInOut'
+      }, `-=${baseTime}`)
+      .to(planeBack.material.uniforms.uDegrade, 2, {
+        value: this.resources[this.currentIndex].degrade,
+        ease: 'Circ.easeInOut'
+      }, `-=${baseTime * 0.5}`)
+      .eventCallback('onComplete', () => {
+        planeFront.material.uniforms.uDegrade.value = 0
+        this.nextSlideTexture(planeFront)
+        this.timerSlideActive = true
+        this.boolControl = !this.boolControl
+      })
+  }
+
+  nextSlideTexture (plane) {
+    this.currentIndex++
+    this.currentIndex = this.currentIndex === this.resources.length
+      ? 0
+      : this.currentIndex
+    plane.material.uniforms.uTexture.value = this.resources[this.currentIndex].image
   }
 
   update (delta, time) {}
-
-  buildGuiControls (object) {
-    const gui = new Guify({
-      root: document.body,
-      align: 'right',
-      open: true
-    })
-
-    gui.Register({
-      type: 'range',
-      label: 'Level Degrade',
-      min: 0,
-      max: 1,
-      object,
-      property: 'degrade',
-      onChange: () => {
-        this.mesh.material.uniforms.degrade.value = object.degrade
-      }
-    })
-  }
 }
