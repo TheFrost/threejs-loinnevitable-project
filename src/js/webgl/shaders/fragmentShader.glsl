@@ -19,12 +19,14 @@ void main() {
 
   vec4 texture = texture2D(uTexture, uv);
 
+  float degradeFactor = uDegrade * 0.4;
   float degradePoint = 0.;
+  float blur = 0.1;
 
   for (float i = 0.; i < 10.; i++) {
     vec2 point = N22(vec2(i));
     float dist = length(uv - point);
-    degradePoint += smoothstep(uDegrade * 0.5, 0., dist);
+    degradePoint += smoothstep(degradeFactor, degradeFactor - blur, dist);
   }
 
   texture.a = max(0., 1. - degradePoint) * uAlpha;
