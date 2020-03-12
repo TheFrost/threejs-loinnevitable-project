@@ -1,7 +1,5 @@
 precision highp float;
 
-#define sat(x) clamp(x, .0, 1.)
-
 varying vec2 vUv;
 
 uniform sampler2D uTexture;
