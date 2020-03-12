@@ -7,19 +7,19 @@ const sceneManager = new SceneManager({
   resources: [
     {
       image: 'https://images.unsplash.com/photo-1533661537256-701c0084511d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&h=1024',
-      degrade: 0.95
+      degrade: Math.random()
     },
     {
       image: 'https://images.unsplash.com/photo-1557939403-1760a0e47505?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&h=1024',
-      degrade: 0.57
+      degrade: Math.random()
     },
     {
       image: 'https://images.unsplash.com/photo-1564086539698-2c4d0e640d7a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&h=1024',
-      degrade: 0.79
+      degrade: Math.random()
     },
     {
       image: 'https://images.unsplash.com/photo-1564022228519-2f6975e40da8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&h=1024',
-      degrade: 0.15
+      degrade: Math.random()
     }
   ]
 }, true)
