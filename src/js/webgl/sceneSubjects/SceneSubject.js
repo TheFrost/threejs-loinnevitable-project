@@ -80,11 +80,11 @@ export default class SceneSubject {
 
     timeline
       .to(planeFront.material.uniforms.uAlpha, baseTime, {
-        value: 0,
+        value: 0.1,
         ease: 'Expo.easeInOut'
       })
       .to(planeFront.position, baseTime, {
-        z: -0.1,
+        z: -0.05,
         ease: 'Expo.easeInOut'
       }, `-=${baseTime}`)
       .to(planeBack.material.uniforms.uAlpha, baseTime, {
@@ -93,15 +93,17 @@ export default class SceneSubject {
       }, `-=${baseTime}`)
       .to(planeBack.position, baseTime, {
         z: 0,
-        ease: 'Expo.easeInOut'
+        ease: 'Expo.easeInOut',
+        onComplete: () => {
+          planeFront.material.uniforms.uDegrade.value = 0
+          this.nextSlideTexture(planeFront)
+        }
       }, `-=${baseTime}`)
       .to(planeBack.material.uniforms.uDegrade, 2, {
         value: this.resources[this.currentIndex].degrade,
         ease: 'Circ.easeInOut'
       }, `-=${baseTime * 0.5}`)
       .eventCallback('onComplete', () => {
-        planeFront.material.uniforms.uDegrade.value = 0
-        this.nextSlideTexture(planeFront)
         this.timerSlideActive = true
         this.boolControl = !this.boolControl
       })
