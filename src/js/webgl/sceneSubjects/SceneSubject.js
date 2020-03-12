@@ -42,6 +42,10 @@ export default class SceneSubject {
           type: 'f',
           value: 0
         },
+        uSeed: {
+          type: 'f',
+          value: 0
+        },
         uTexture: {
           type: 't',
           value: null
@@ -118,6 +122,7 @@ export default class SceneSubject {
       ? 0
       : this.currentIndex
     plane.material.uniforms.uTexture.value = this.resources[this.currentIndex].image
+    plane.material.uniforms.uSeed.value = this.resources[this.currentIndex].seed
   }
 
   update () {
