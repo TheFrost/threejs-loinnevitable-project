@@ -8,8 +8,9 @@ import fragmentShader from '../shaders/fragmentShader.glsl'
 export default class SceneSubject {
   planes = []
   limitPlanes = 2
-  timerControl = 0
-  timerLimit = 10
+  frameCount = 0
+  secondsCount = 0
+  secondsLimit = 5
   currentIndex = null
   geometry = null
   material = null
@@ -24,10 +25,6 @@ export default class SceneSubject {
     this.scene = scene
     this.buildBaseSource()
     this.setupShapes()
-
-    document
-      .querySelector('.next')
-      .addEventListener('click', () => this.triggerChangeTimeline())
   }
 
   buildBaseSource () {
@@ -106,6 +103,15 @@ export default class SceneSubject {
       })
   }
 
+  validateTimer () {
+    if (this.secondsCount % this.secondsLimit === 0) {
+      this.timerSlideActive = false
+      this.frameCount = 0
+      this.secondsCount = 0
+      this.triggerChangeTimeline()
+    }
+  }
+
   nextSlideTexture (plane) {
     this.currentIndex++
     this.currentIndex = this.currentIndex === this.resources.length
@@ -114,5 +120,11 @@ export default class SceneSubject {
     plane.material.uniforms.uTexture.value = this.resources[this.currentIndex].image
   }
 
-  update (delta, time) {}
+  update () {
+    this.frameCount++
+    if (this.timerSlideActive && this.frameCount % 60 === 0) {
+      this.secondsCount++
+      this.validateTimer()
+    }
+  }
 }
