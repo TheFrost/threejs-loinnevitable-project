@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { TimelineMax } from 'gsap'
+import { pubsub } from '../../tools'
 
 // shaders
 import vertexShader from '../shaders/vertexShader.glsl'
@@ -25,6 +26,11 @@ export default class SceneSubject {
     this.scene = scene
     this.buildBaseSource()
     this.setupShapes()
+    this.bindEvents()
+  }
+
+  bindEvents () {
+    pubsub.suscribe('entry:init', () => this.triggerEntry())
   }
 
   buildBaseSource () {
@@ -70,8 +76,6 @@ export default class SceneSubject {
       this.scene.add(plane)
       this.planes.push(plane)
     }
-
-    this.triggerEntry()
   }
 
   triggerEntry () {
