@@ -17,7 +17,7 @@ export default class SceneSubject {
   resources = null
   scene = null
   boolControl = false
-  timerSlideActive = true
+  timerSlideActive = false
 
   constructor (scene, resources) {
     this.resources = resources
@@ -58,18 +58,43 @@ export default class SceneSubject {
     for (let i = 0; i < this.limitPlanes; i++) {
       const materialClone = this.material.clone()
 
-      materialClone.uniforms.uAlpha.value = 1 - i
+      materialClone.uniforms.uAlpha.value = 0
       materialClone.uniforms.uTexture.value = this.resources[i].image
 
       const plane = new THREE.Mesh(
         this.geometry,
         materialClone
       )
-      plane.position.z = -0.1 * i
+      plane.position.z = -0.1
 
       this.scene.add(plane)
       this.planes.push(plane)
     }
+
+    this.triggerEntry()
+  }
+
+  triggerEntry () {
+    const timeline = new TimelineMax()
+    const baseTime = 2
+    const firstPlane = this.planes[0]
+
+    timeline
+      .to(firstPlane.position, baseTime, {
+        z: 0,
+        ease: 'Expo.easeInOut'
+      })
+      .to(firstPlane.material.uniforms.uAlpha, baseTime, {
+        value: 1,
+        ease: 'Expo.easeInOut'
+      }, `-=${baseTime}`)
+      .to(firstPlane.material.uniforms.uDegrade, baseTime, {
+        value: this.resources[this.currentIndex].degrade,
+        ease: 'Circ.easeInOut'
+      }, `-=${baseTime * 0.5}`)
+      .eventCallback('onComplete', () => {
+        this.timerSlideActive = true
+      })
   }
 
   triggerChangeTimeline () {
