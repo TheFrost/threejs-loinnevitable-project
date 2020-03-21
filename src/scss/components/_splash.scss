@@ -1,0 +1,23 @@
+.splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  background: #000;
+
+  &__action {
+    padding: 0.5rem 3rem;
+
+    font-size: 2rem;
+
+    border: 1px solid white;
+    background: none;
+    color: white;
+  }
+}
