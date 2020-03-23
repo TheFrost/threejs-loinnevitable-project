@@ -11,7 +11,8 @@ export default class SceneSubject {
   limitPlanes = 2
   frameCount = 0
   secondsCount = 0
-  secondsLimit = 5
+  secondsLimit = 10
+  baseTransitionsTime = 5
   currentIndex = null
   geometry = null
   material = null
@@ -80,22 +81,26 @@ export default class SceneSubject {
 
   triggerEntry () {
     const timeline = new TimelineMax()
-    const baseTime = 2
     const firstPlane = this.planes[0]
+    const secondPlane = this.planes[1]
 
     timeline
-      .to(firstPlane.position, baseTime, {
+      .to(firstPlane.position, this.baseTransitionsTime, {
         z: 0,
         ease: 'Expo.easeInOut'
       })
-      .to(firstPlane.material.uniforms.uAlpha, baseTime, {
+      .to(firstPlane.material.uniforms.uAlpha, this.baseTransitionsTime, {
         value: 1,
         ease: 'Expo.easeInOut'
-      }, `-=${baseTime}`)
-      .to(firstPlane.material.uniforms.uDegrade, baseTime, {
+      }, `-=${this.baseTransitionsTime}`)
+      .to(secondPlane.material.uniforms.uAlpha, this.baseTransitionsTime, {
+        value: 0.1,
+        ease: 'Expo.easeInOut'
+      }, `-=${this.baseTransitionsTime}`)
+      .to(firstPlane.material.uniforms.uDegrade, this.baseTransitionsTime, {
         value: this.resources[this.currentIndex].degrade,
         ease: 'Circ.easeInOut'
-      }, `-=${baseTime * 0.5}`)
+      }, `-=${this.baseTransitionsTime * 0.5}`)
       .eventCallback('onComplete', () => {
         this.timerSlideActive = true
       })
@@ -105,33 +110,32 @@ export default class SceneSubject {
     const planeFront = this.planes[+this.boolControl]
     const planeBack = this.planes[+!this.boolControl]
     const timeline = new TimelineMax()
-    const baseTime = 2
 
     timeline
-      .to(planeFront.material.uniforms.uAlpha, baseTime, {
+      .to(planeFront.material.uniforms.uAlpha, this.baseTransitionsTime, {
         value: 0.1,
         ease: 'Expo.easeInOut'
       })
-      .to(planeFront.position, baseTime, {
+      .to(planeFront.position, this.baseTransitionsTime, {
         z: -0.05,
         ease: 'Expo.easeInOut'
-      }, `-=${baseTime}`)
-      .to(planeBack.material.uniforms.uAlpha, baseTime, {
+      }, `-=${this.baseTransitionsTime}`)
+      .to(planeBack.material.uniforms.uAlpha, this.baseTransitionsTime, {
         value: 1,
         ease: 'Expo.easeInOut'
-      }, `-=${baseTime}`)
-      .to(planeBack.position, baseTime, {
+      }, `-=${this.baseTransitionsTime}`)
+      .to(planeBack.position, this.baseTransitionsTime, {
         z: 0,
         ease: 'Expo.easeInOut',
         onComplete: () => {
           planeFront.material.uniforms.uDegrade.value = 0
           this.nextSlideTexture(planeFront)
         }
-      }, `-=${baseTime}`)
-      .to(planeBack.material.uniforms.uDegrade, 2, {
+      }, `-=${this.baseTransitionsTime}`)
+      .to(planeBack.material.uniforms.uDegrade, this.baseTransitionsTime, {
         value: this.resources[this.currentIndex].degrade,
         ease: 'Circ.easeInOut'
-      }, `-=${baseTime * 0.5}`)
+      }, `-=${this.baseTransitionsTime * 0.5}`)
       .eventCallback('onComplete', () => {
         this.timerSlideActive = true
         this.boolControl = !this.boolControl
