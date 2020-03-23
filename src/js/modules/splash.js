@@ -10,6 +10,7 @@ export default class Splash {
   }
 
   init () {
+    this.setupElements()
     this.bindEvents()
   }
 
@@ -19,10 +20,25 @@ export default class Splash {
     action.addEventListener('click', () => this.triggerStart())
   }
 
+  setupElements () {
+    const { action } = this.DOM
+    TweenMax.set(action, {
+      autoAlpha: 0
+    })
+  }
+
+  start () {
+    const { action } = this.DOM
+    TweenMax.to(action, 2, {
+      autoAlpha: 1,
+      ease: 'Expo.easeInOut'
+    })
+  }
+
   triggerStart () {
     const { splash } = this.DOM
 
-    TweenMax.to(splash, 1, {
+    TweenMax.to(splash, 2, {
       autoAlpha: 0,
       ease: 'Expo.easeInOut'
     }).eventCallback('onComplete', () => {
