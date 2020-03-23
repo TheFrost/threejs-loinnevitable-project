@@ -63,5 +63,8 @@ const render = () => {
 }
 
 // init
-bindEvents()
-render()
+window.addEventListener('load', () => {
+  bindEvents()
+  render()
+  splash.start()
+})
