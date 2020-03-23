@@ -1,6 +1,7 @@
 import 'regenerator-runtime/runtime'
 import SceneManager from './webgl/SceneManager'
 import Splash from './modules/splash'
+import Audio from './modules/Audio'
 
 const resources = [
   {
@@ -36,6 +37,9 @@ const sceneManager = new SceneManager({
 
 const splash = new Splash()
 splash.init()
+
+const audio = new Audio()
+audio.init()
 
 // logic
 const resizeCanvas = () => {
