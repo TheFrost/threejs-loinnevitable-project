@@ -1,0 +1,55 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+
+  background: rgba(black, 0.8);
+
+  &__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    max-width: 800px;
+    padding: 1rem;
+
+    border: 1px solid white;
+    color: white;
+    background: black;
+  }
+
+  &__close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+
+    border: none;
+    background: none;
+
+    > svg {
+      width: 100%;
+      height: 100%;
+      fill: white;
+    }
+  }
+
+  &__body {
+    width: 100%;
+  }
+}
