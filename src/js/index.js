@@ -1,4 +1,5 @@
 import 'regenerator-runtime/runtime'
+import debounce from 'lodash/debounce'
 import SceneManager from './webgl/SceneManager'
 import Splash from './modules/splash'
 import Audio from './modules/Audio'
@@ -54,10 +55,11 @@ const resizeCanvas = () => {
   canvas.height = canvas.offsetHeight
 
   sceneManager.resizeHandler()
+  uploader.resizeHandler()
 }
 
 const bindEvents = () => {
-  window.onresize = resizeCanvas
+  window.onresize = debounce(resizeCanvas, 100)
   resizeCanvas()
 }
 

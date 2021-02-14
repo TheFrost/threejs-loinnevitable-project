@@ -12,13 +12,47 @@ $size: 40px;
   border: 1px solid white;
   border-radius: 50%;
 
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+
+    &-head {
+      width: 100%;
+      max-width: 320px;
+      margin-bottom: 1rem;
+    }
+
+    &-foot {
+      text-align: center;
+      margin-top: 1rem;
+    }
+  }
+
+  &__timer {
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 1rem;
+
+    &-title {
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    &-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-col {
+      margin: 0 0.5rem;
+    }
+  }
+
   &__modal {
     .modal {
-      &__container {
-        height: 90vmin;
-        max-height: 800px;
-      }
-
       &__body {
         height: 100%;
       }
@@ -47,8 +81,28 @@ $size: 40px;
 
   &__image { display: none; }
 
-  &__ui {
-    height: 100%;
+  &__cropper {
+    display: flex;
+
+    &-col {
+      padding: 0.5rem;
+      border: 1px solid white;
+      border-left: none;
+
+      &:first-child {
+        border-left: 1px solid white;
+      }
+    }
+
+    &-ui {
+      width: calc(100vw - 5rem);
+      height: calc(100vw - 5rem);
+
+      @media (min-width: 431px) {
+        width: 430px;
+        height: 430px;
+      }
+    }
   }
 
   &__submit {

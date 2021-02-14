@@ -7,7 +7,9 @@ export default class Uploader {
   constructor () {
     this.DOM = {
       file: document.querySelector('.uploader__file'),
-      image: document.querySelector('.uploader__image')
+      image: document.querySelector('.uploader__image'),
+      cropperUI: document.querySelector('.uploader__cropper-ui'),
+      fileName: document.getElementById('name')
     }
   }
 
@@ -28,6 +30,7 @@ export default class Uploader {
     const reader = new window.FileReader()
     reader.onload = ({ target }) => this.readFileHandler(target.result)
     reader.readAsDataURL(files[0])
+    this.setupFileInfo(files[0])
   }
 
   readFileHandler (file) {
@@ -35,16 +38,26 @@ export default class Uploader {
     modal.trigger('uploader')
   }
 
-  setupImage (file) {
-    const { image } = this.DOM
-    image.src = file
+  setupFileInfo ({ name }) {
+    const { fileName } = this.DOM
+    fileName.value = name
   }
 
   setupCropper () {
-    const { image } = this.DOM
+    const { image, cropperUI } = this.DOM
     this.cropper = new Cropper(image, {
       aspectRatio: 1 / 1,
-      dragMode: 'move'
+      dragMode: 'move',
+      cropBoxResizable: false,
+      minCropBoxWidth: cropperUI.offsetWidth
+    })
+  }
+
+  resizeHandler () {
+    const { cropperUI } = this.DOM
+
+    this.cropper.setCropBoxData({
+      width: cropperUI.offsetWidth
     })
   }
 }

@@ -30,7 +30,7 @@
 
   <!-- Uploader control -->
   <div class="uploader">
-    <input type="file" class="uploader__file">
+    <input type="file" class="uploader__file" accept=".jpg,.png">
     <svg class="uploader__icon" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       <path
         d="M296 384h-80c-13.3 0-24-10.7-24-24v-168h-87.7c-17.8 0-26.7-21.5-14.1-34.1l152.1-152.2c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1h-87.7v168c0 13.3-10.7 24-24 24zM512 376v112c0 13.3-10.7 24-24 24h-464c-13.3 0-24-10.7-24-24v-112c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zM388 464c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zM452 464c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z">
@@ -52,22 +52,60 @@
         </button>
         <div class="modal__body">
 
-          <!-- Uploader canvas -->
-          <div class="uploader__ui">
-            <img src="" alt="" class="uploader__image">
-          </div>
-          <!-- // END Uploader canvas -->
+          <form class="uploader__form">
+            <header class="uploader__form-head">
+              <div class="form__control">
+                <label for="name">Name</label>
+                <input type="text" id="name" required>
+              </div>
+            </header>
+
+            <!-- Uploader canvas -->
+            <div class="uploader__cropper">
+              <div class="uploader__cropper-col">
+                <div class="uploader__cropper-ui">
+                  <img src="" alt="" class="uploader__image">
+                </div>
+              </div>
+            </div>
+            <!-- // END Uploader canvas -->
+
+            <div class="uploader__timer">
+              <h2 class="uploader__timer-title">Death</h2>
+              <div class="uploader__timer-row">
+                <div class="uploader__timer-col">
+                  <div class="form__control">
+                    <label for="days">Days</label>
+                    <input type="number" id="days" max="10" min="0" required>
+                  </div>
+                </div>
+                <div class="uploader__timer-col">
+                  <div class="form__control">
+                    <label for="hours">Hours</label>
+                    <input type="number" id="hours" max="23" min="0" required>
+                  </div>
+                </div>
+                <div class="uploader__timer-col">
+                  <div class="form__control">
+                    <label for="minutes">Minutes</label>
+                    <input type="number" id="minutes" max="59" min="0" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="uploader__form-foot">
+              <button class="uploader__submit" type="submit">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path
+                    d="M476 3.2l-463.5 267.4c-18.1 10.4-15.8 35.6 2.2 43.2l106.3 44.6 287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3l-240.9 293.5v80.5c0 23.6 28.5 32.9 42.5 15.8l63.5-77.3 124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432c3.4-20.2-18.3-34.8-35.6-24.8z">
+                  </path>
+                </svg>
+              </button>
+            </footer>
+          </form>
 
         </div>
-        <footer class="modal__footer">
-          <button class="uploader__submit">
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <path
-                d="M476 3.2l-463.5 267.4c-18.1 10.4-15.8 35.6 2.2 43.2l106.3 44.6 287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3l-240.9 293.5v80.5c0 23.6 28.5 32.9 42.5 15.8l63.5-77.3 124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432c3.4-20.2-18.3-34.8-35.6-24.8z">
-              </path>
-            </svg>
-          </button>
-        </footer>
       </div>
     </div>
   </div>

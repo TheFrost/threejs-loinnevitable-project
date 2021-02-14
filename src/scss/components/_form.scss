@@ -1,0 +1,25 @@
+.form {
+  &__control {
+    width: 100%;
+    text-align: center;
+
+    > label {
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+
+    > input {
+      width: 100%;
+      padding: 0.5rem 0;
+
+      font-size: 1rem;
+      text-align: center;
+
+      background: none;
+      border: none;
+      border-bottom: 2px solid white;
+      color: rgba(white, 0.5);
+      outline: none;
+    }
+  }
+}
